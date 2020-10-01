@@ -26,11 +26,11 @@ int_to_string(unsigned int num)
 	    string_index = 0;
 
 	index = digits;
-	char *string = malloc(sizeof *string * (digits));
+	char *string = malloc(sizeof *string * (digits + 1));
 	
 	while (index > 0) {
 		curr_digit = (num % (unsigned int)pow(10, index)) / 
-				(unsigned int)pow(10, index);
+				(unsigned int)pow(10, index - 1);
 		string[string_index] = 48 + curr_digit;
 		string_index += 1;
 		index -= 1;
@@ -45,18 +45,16 @@ main()
 	/* 192.168.1.154 */
 	char initial[16];
 	scanf("%s", &initial);
-	
 	unsigned int address = inet_pton(AF_INET, initial, &address), buffer;
 	address = htonl(address);
 	printf("initial in hex: %x", address);
-	
 	char IP[16];
 	char *current_octet;
 
 	for (int i = 0; i < 4; i++) {
 		buffer = address;
-		buffer <<= 32 - 8*i;
-		buffer >>= 32;
+		buffer <<= 24 - 8*i;
+		buffer >>= 24;
 
 		current_octet = int_to_string(buffer);
 		strncat(IP, current_octet, strlen(current_octet));
