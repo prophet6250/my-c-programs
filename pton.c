@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	unsigned int address = 0, octet_count = 0;
 
 	while (octet = strtok_r(buffer, ".", &buffer)) {
-		if (octet_count < 3) {
+		if (octet_count < 4) {
 			address <<= 8;
 			octet_count += 1;
 		}
