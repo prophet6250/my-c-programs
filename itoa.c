@@ -1,5 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h> 
+#include <string.h>
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 unsigned int
 power(int base, int raised_to)
@@ -51,7 +59,12 @@ int main()
 	int calls = 4;
 	char IP[16];
 	while (calls > 0) {
-		sleep(1);
+    #ifdef _WIN32
+		Sleep(1000);
+    #else
+    sleep(1);
+    #endif
+
 		srand(time(0));
 		unsigned int current = rand() % 255;
 		strcat(IP, int_to_string(current));
@@ -62,4 +75,3 @@ int main()
 	printf("IP: %s", IP);
 	return 0;
 }
-
