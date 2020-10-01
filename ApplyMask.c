@@ -19,7 +19,12 @@ int main(int argc, char *argv[])
 
 	strncpy(s_IP, argv[1], 16);
 
-	b_mask = 0xffffffff << (32 - c_mask - 1); 
+	/* direct calculation of binary subnet mask was not producing correct
+	 * results, i.e, b_mask = 0xffffffff << (32 - c_mask); wasn't working.
+	 * this loop basically converts 0xffffffff into the required binary
+	 * subnet mask
+	 */
+	b_mask = 0xffffffff << (32 - c_mask); 
 
 	inet_pton(AF_INET, s_IP, &b_IP);	
 	b_IP = htonl(b_IP);
@@ -30,11 +35,11 @@ int main(int argc, char *argv[])
 	/* simple ANDing */
 	b_masked_IP = b_mask & b_IP;
 
-	b_masked_IP = ntoh(b_masked_IP);
-	inet_ntop(AF_INET, &b_masked_IP, s_masked_IP, 24);
+	b_masked_IP = ntohl(b_masked_IP);
+	inet_ntop(AF_INET, &b_masked_IP, s_masked_IP, 16);
 	/* this may be unnecessary/redundant on your machine, check the output
 	 * and remove this call accordingly */
-	b_masked_IP = hton(b_masked_IP);
+	b_masked_IP = htonl(b_masked_IP);
 
 	printf("masked IP in binary form: %x, in string form: %s\n", b_masked_IP,
 			s_masked_IP);
