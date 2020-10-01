@@ -7,7 +7,7 @@ power(int base, int raised_to)
 	unsigned int answer = base;
 	if (raised_to == 0) return 1;
 
-	while (raised_to) {
+	while (raised_to - 1) {
 		answer *= base;
 		raised_to -= 1;
 	}
@@ -37,8 +37,8 @@ int_to_string(unsigned int num)
 	char *string = malloc(sizeof *string * (digits + 1));
 	while (index > 0) {
 
-		curr_digit = (num % power(10, index - 1)) / power(10, index);
-		string[string_index] = 48 + curr_digit + 1;
+		curr_digit = (num % power(10, index)) / power(10, index - 1);
+		string[string_index] = 48 + curr_digit;
 		string_index += 1;
 		index -= 1;
 	}
